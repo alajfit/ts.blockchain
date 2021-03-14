@@ -11,4 +11,5 @@
 - Demonstrate Transactions
 - Demonstrate Mining Blocks
 - Demonstrate Rewards from Mining Blocks
-
+- Signing of Transactions
+- Checking transactions are signed before adding to blockchain
