@@ -1,15 +1,15 @@
-import { Blockchain, Block } from '../src'
+import { Chain, Block } from '../src'
 
 describe('Blockchain', () => {
-    let tsBlockchain: Blockchain
+    let tsBlockchain: Chain
 
     it ('Should allow us to create a Blockchain with a Genesis block', () => {
-        tsBlockchain = new Blockchain()
+        tsBlockchain = new Chain()
         expect(tsBlockchain.getLatestBlock().index).toBe(0)
     })
 
     it ('Should allow us to add Blocks to the blockchain', () => {
-        tsBlockchain = new Blockchain()
+        tsBlockchain = new Chain()
         const data = { amount: 2 }
         tsBlockchain.addBlock(new Block(1, new Date(), data))
         expect(tsBlockchain.getLatestBlock().index).toBe(1)
@@ -17,7 +17,7 @@ describe('Blockchain', () => {
     })
 
     it ('Should be able to determine the chain is valid', () => {
-        tsBlockchain = new Blockchain()
+        tsBlockchain = new Chain()
         tsBlockchain.addBlock(new Block(1, new Date(), { amount: 4 }))
         tsBlockchain.addBlock(new Block(2, new Date(), { amount: 6 }))
         tsBlockchain.addBlock(new Block(3, new Date(), { amount: 2 }))
@@ -26,7 +26,7 @@ describe('Blockchain', () => {
     })
 
     it ('Should be able to determine if the data has been corrupted', () => {
-        tsBlockchain = new Blockchain()
+        tsBlockchain = new Chain()
         tsBlockchain.addBlock(new Block(1, new Date(), { amount: 2 }))
         tsBlockchain.addBlock(new Block(2, new Date(), { amount: 8 }))
         tsBlockchain.addBlock(new Block(3, new Date(), { amount: 4 }))
@@ -35,7 +35,7 @@ describe('Blockchain', () => {
     })
 
     it ('Should be able to check if a bad actor tries to recalculate the hash', () => {
-        tsBlockchain = new Blockchain()
+        tsBlockchain = new Chain()
         tsBlockchain.addBlock(new Block(1, new Date(), { amount: 5 }))
         tsBlockchain.addBlock(new Block(2, new Date(), { amount: 6 }))
         tsBlockchain.addBlock(new Block(3, new Date(), { amount: 7 }))
@@ -45,7 +45,7 @@ describe('Blockchain', () => {
     })
 
     it ('Will check the block has been mined with valid difficulty', () => {
-        tsBlockchain = new Blockchain(3)
+        tsBlockchain = new Chain(3)
         tsBlockchain.addBlock(new Block(1, new Date(), { amount: 5 }))
         expect(tsBlockchain.getLatestBlock().hash.substring(0, 3)).toBe('000')
     })
