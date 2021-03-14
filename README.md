@@ -7,3 +7,8 @@
 - Demonstrate how simple it is to create a Blockchain
 - Demonstrate how integrity is the core of the Blockchain
 - How the Blockchain maintains its integrity
+- Demonstrate Proof of Work
+- Demonstrate Transactions
+- Demonstrate Mining Blocks
+- Demonstrate Rewards from Mining Blocks
+
