@@ -1,0 +1,24 @@
+{
+  "name": "ts.blockchain",
+  "version": "1.0.0",
+  "description": "Blockchain built in TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alajfit/ts.blockchain.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alajfit/ts.blockchain/issues"
+  },
+  "homepage": "https://github.com/alajfit/ts.blockchain#readme",
+  "devDependencies": {
+    "tslint": "^6.1.3",
+    "typescript": "^4.2.3"
+  }
+}
