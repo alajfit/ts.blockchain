@@ -33,4 +33,11 @@ export class Block {
         }
         return this.hash
     }
+
+    allTransactionsValid() {
+        for (const transaction of this.transactions) {
+            if (!transaction.isValid()) return false
+        }
+        return true
+    }
 }

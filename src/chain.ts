@@ -35,7 +35,10 @@ export class Chain {
         return balance
     }
 
-    createTransaction(transaction: Transaction) : void {
+    addTransaction(transaction: Transaction) : void {
+        if (!transaction.toAddress || !transaction.fromAddress) throw new Error('Malformed transaction')
+        if (!transaction.isValid()) throw new Error('Invalid Transaction')
+
         this.pendingTransactions.push(transaction)
     }
 
@@ -56,13 +59,9 @@ export class Chain {
             const currBlock = this.chain[i]
             const prevBlock = this.chain[i - 1]
 
-            if (currBlock.hash !== currBlock.calculateHash()) {
-                return false
-            }
-
-            if (currBlock.previousHash !== prevBlock.hash) {
-                return false
-            }
+            if (!currBlock.allTransactionsValid()) return false
+            if (currBlock.hash !== currBlock.calculateHash()) return false
+            if (currBlock.previousHash !== prevBlock.hash) return false
         }
         return true
     }
