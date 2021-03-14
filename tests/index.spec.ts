@@ -1,6 +1,7 @@
-import { Chain, Block } from '../src'
+import { Chain, Block, Transaction } from '../src'
 
 describe('Blockchain', () => {
+    const testToAddress = 'test-to-address'
     let tsBlockchain: Chain
 
     it ('Should allow us to create a Blockchain with a Genesis block', () => {
@@ -8,44 +9,50 @@ describe('Blockchain', () => {
         expect(tsBlockchain.getLatestBlock().previousHash).toBe('0')
     })
 
-    it ('Should allow us to add Blocks to the blockchain', () => {
+    it ('Should allow us to mine Blocks on the blockchain', () => {
         tsBlockchain = new Chain()
-        const data = { amount: 2 }
-        tsBlockchain.addBlock(new Block(new Date(), data))
-        expect(tsBlockchain.getLatestBlock().data).toBe(data)
+        tsBlockchain.minePendingTransactions(testToAddress)
+        expect(tsBlockchain.pendingTransactions.length).toBe(1)
     })
 
     it ('Should be able to determine the chain is valid', () => {
         tsBlockchain = new Chain()
-        tsBlockchain.addBlock(new Block(new Date(), { amount: 4 }))
-        tsBlockchain.addBlock(new Block(new Date(), { amount: 6 }))
-        tsBlockchain.addBlock(new Block(new Date(), { amount: 2 }))
-        tsBlockchain.addBlock(new Block(new Date(), { amount: 3 }))
+        tsBlockchain.minePendingTransactions(testToAddress)
+        tsBlockchain.minePendingTransactions(testToAddress)
+        tsBlockchain.minePendingTransactions(testToAddress)
+        tsBlockchain.minePendingTransactions(testToAddress)
         expect(tsBlockchain.isChainValid()).toBe(true)
     })
 
     it ('Should be able to determine if the data has been corrupted', () => {
         tsBlockchain = new Chain()
-        tsBlockchain.addBlock(new Block(new Date(), { amount: 2 }))
-        tsBlockchain.addBlock(new Block(new Date(), { amount: 8 }))
-        tsBlockchain.addBlock(new Block(new Date(), { amount: 4 }))
-        tsBlockchain.chain[1].data = { amount: 1000 }
+        tsBlockchain.minePendingTransactions(testToAddress)
+        tsBlockchain.minePendingTransactions(testToAddress)
+        tsBlockchain.minePendingTransactions(testToAddress)
+        tsBlockchain.chain[1].transactions = [new Transaction(null, testToAddress, 10000)]
         expect(tsBlockchain.isChainValid()).toBe(false)
     })
 
     it ('Should be able to check if a bad actor tries to recalculate the hash', () => {
         tsBlockchain = new Chain()
-        tsBlockchain.addBlock(new Block(new Date(), { amount: 5 }))
-        tsBlockchain.addBlock(new Block(new Date(), { amount: 6 }))
-        tsBlockchain.addBlock(new Block(new Date(), { amount: 7 }))
-        tsBlockchain.chain[1].data = { amount: 1000 }
+        tsBlockchain.minePendingTransactions(testToAddress)
+        tsBlockchain.minePendingTransactions(testToAddress)
+        tsBlockchain.minePendingTransactions(testToAddress)
+        tsBlockchain.chain[1].transactions = [new Transaction(null, testToAddress, 10000)]
         tsBlockchain.chain[1].calculateHash()
         expect(tsBlockchain.isChainValid()).toBe(false)
     })
 
     it ('Will check the block has been mined with valid difficulty', () => {
         tsBlockchain = new Chain(3)
-        tsBlockchain.addBlock(new Block(new Date(), { amount: 5 }))
+        tsBlockchain.minePendingTransactions(testToAddress)
         expect(tsBlockchain.getLatestBlock().hash.substring(0, 3)).toBe('000')
+    })
+
+    it ('Will rewards are available once a new block has been mined', () => {
+        tsBlockchain = new Chain()
+        tsBlockchain.minePendingTransactions(testToAddress)
+        tsBlockchain.minePendingTransactions(testToAddress)
+        expect(tsBlockchain.getBalanceOfAddress(testToAddress)).toBe(10)
     })
 })

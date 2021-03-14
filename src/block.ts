@@ -1,34 +1,36 @@
 import { SHA256 } from 'crypto-js'
+import { Transaction } from './transaction'
 
 export class Block {
     timestamp: Date
-    data: Object
+    transactions: Transaction[]
     previousHash: String
     hash: String
     nounce: number
 
-    constructor(timestamp: Date, data: Object, previousHash: String = '') {
+    constructor(timestamp: Date, transactions: Transaction[], previousHash: String = '') {
         this.timestamp = timestamp
-        this.data = data
+        this.transactions = transactions
         this.previousHash = previousHash
         this.nounce = 0
         this.hash = this.calculateHash()
     }
 
-    calculateHash(): String {
+    calculateHash() : String {
         return SHA256(
             this.previousHash + 
             this.timestamp.toISOString() + 
-            JSON.stringify(this.data) +
+            JSON.stringify(this.transactions) +
             this.nounce
         ).toString()
     }
 
-    mineBlock(difficulty) {
+    mineBlock(difficulty) : String {
         const difficultyCheck = '0'.repeat(difficulty)
         while(this.hash.substring(0, difficulty) !== difficultyCheck) {
             this.nounce++
             this.hash = this.calculateHash()
         }
+        return this.hash
     }
 }
