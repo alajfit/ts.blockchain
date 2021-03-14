@@ -1,4 +1,4 @@
-import { Chain, Block, Transaction } from '../src'
+import { Chain, Transaction } from '../src'
 
 describe('Blockchain', () => {
     const testToAddress = 'test-to-address'

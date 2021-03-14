@@ -4,10 +4,7 @@
   "description": "Blockchain built in TypeScript",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/index.js",
-    "test": "jest",
-    "test::watch": "jest --watch",
-    "test::clearCache": "jest --clearCache"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -29,6 +26,8 @@
   },
   "dependencies": {
     "@types/crypto-js": "^4.0.1",
-    "crypto-js": "^4.0.0"
+    "@types/elliptic": "^6.4.12",
+    "crypto-js": "^4.0.0",
+    "elliptic": "^6.5.4"
   }
 }
