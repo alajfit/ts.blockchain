@@ -1,15 +1,13 @@
 import { SHA256 } from 'crypto-js'
 
 export class Block {
-    index: Number
     timestamp: Date
     data: Object
     previousHash: String
     hash: String
     nounce: number
 
-    constructor(index: Number, timestamp: Date, data: Object, previousHash: String = '') {
-        this.index = index
+    constructor(timestamp: Date, data: Object, previousHash: String = '') {
         this.timestamp = timestamp
         this.data = data
         this.previousHash = previousHash
@@ -19,9 +17,8 @@ export class Block {
 
     calculateHash(): String {
         return SHA256(
-            this.index.toString() + 
             this.previousHash + 
-            this.timestamp + 
+            this.timestamp.toISOString() + 
             JSON.stringify(this.data) +
             this.nounce
         ).toString()

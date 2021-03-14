@@ -10,7 +10,7 @@ export class Chain {
     }
 
     createGenesisBlock(): Block {
-        return new Block(0, new Date(), 'Genesis Block', '0')
+        return new Block(new Date(), 'Genesis Block', '0')
     }
 
     getLatestBlock(): Block {
