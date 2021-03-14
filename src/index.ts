@@ -6,12 +6,14 @@ export class Block {
     data: Object
     previousHash: String
     hash: String
+    nounce: number
 
     constructor(index: Number, timestamp: Date, data: Object, previousHash: String = '') {
         this.index = index
         this.timestamp = timestamp
         this.data = data
         this.previousHash = previousHash
+        this.nounce = 0
         this.hash = this.calculateHash()
     }
 
@@ -20,15 +22,27 @@ export class Block {
             this.index.toString() + 
             this.previousHash + 
             this.timestamp + 
-            JSON.stringify(this.data)).toString()
+            JSON.stringify(this.data) +
+            this.nounce
+        ).toString()
+    }
+
+    mineBlock(difficulty) {
+        const difficultyCheck = '0'.repeat(difficulty)
+        while(this.hash.substring(0, difficulty) !== difficultyCheck) {
+            this.nounce++
+            this.hash = this.calculateHash()
+        }
     }
 }
 
 export class Blockchain {
     chain: Block[]
+    difficulty: Number
 
-    constructor() {
+    constructor(difficulty: Number = 2) {
         this.chain = [this.createGenesisBlock()]
+        this.difficulty = difficulty
     }
 
     createGenesisBlock(): Block {
@@ -41,7 +55,7 @@ export class Blockchain {
 
     addBlock(block: Block) {
         block.previousHash = this.getLatestBlock().hash
-        block.hash = block.calculateHash()
+        block.mineBlock(this.difficulty)
         this.chain.push(block)
     }
 

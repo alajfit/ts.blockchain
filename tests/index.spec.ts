@@ -43,4 +43,10 @@ describe('Blockchain', () => {
         tsBlockchain.chain[1].calculateHash()
         expect(tsBlockchain.isChainValid()).toBe(false)
     })
+
+    it ('Will check the block has been mined with valid difficulty', () => {
+        tsBlockchain = new Blockchain(3)
+        tsBlockchain.addBlock(new Block(1, new Date(), { amount: 5 }))
+        expect(tsBlockchain.getLatestBlock().hash.substring(0, 3)).toBe('000')
+    })
 })

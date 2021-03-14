@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc && node dist/index.js",
-    "test": "jest"
+    "test": "jest",
+    "test::watch": "jest --watch",
+    "test::clearCache": "jest --clearCache"
   },
   "repository": {
     "type": "git",
